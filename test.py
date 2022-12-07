@@ -4,9 +4,6 @@ import numpy as np
 from math import *
 import statistics
 
-# img = cv2.imread("../data/log2/"+str(151)+"-rgb.png")
-# img2 = cv2.imread("../data/log2/007-rgb.png")
-# imgs = [img, img2]
 
 imgslog1 = []
 
@@ -46,8 +43,8 @@ imgslog1.append(cv2.imread("../data/log1/362-rgb.png"))
 # for i in range (10,68):
 #     imgslog4.append(cv2.imread("../data/log4/0"+str(i)+"-rgb.png"))
 
-coords_center_algorithm = []
-radius_algorithm     = []
+coords_center_algorithm = [] #Mettre les coordonnées des centres trouvées par l'algorithm
+radius_algorithm     = [] #Mettre les rayons trouvées par l'algorithm
 
 coords_center = []
 coords_radius = []
@@ -58,14 +55,12 @@ def onclick_center(event):
     c_x = event.xdata
     c_y = event.ydata
     coords_center.append([c_x,c_y])
-    # print (coords_center)
     plt.close()
 
 def onclick_radius(event):
     c_x = event.xdata
     c_y = event.ydata
     coords_radius.append([c_x,c_y])
-    # print (coords_radius)
     plt.close()
 
 def in_circle(x, y, x_center, y_center, radius):
@@ -109,8 +104,6 @@ print(verification_rates)
 print(statistics.mean(verification_rates))
 plt.plot(verification_rates)
 plt.show()
-
-# associer image et click
 
 # test
 # 362 log1
