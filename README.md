@@ -35,21 +35,29 @@ Une première approche était de chercher des modèles pré-entraînés de la fa
 
 Pour installer tous les packages utilisés dans ce projet, veuillez utiliser la commande :
 
-```$ pip install -r ./requirements.txt```
+```bash
+$ pip install -r ./requirements.txt
+```
 
 ## Lancement du modèle
 
 Pour lancer le modèle, veuillez utiliser la commande :
    
-```$ python main.py chemin/vers/image```
+```bash
+$ python main.py chemin/vers/image
+```
 
 Pour lancer le modèle d'apprentissage, veuillez exécuter toutes les cellules de code dans le fichier *yolo.ipynb* en utilisant la commande:
 
-```$ run -i yolo.ipynb```
+```bash
+$ run -i yolo.ipynb
+```
 
 Après avoir génèrer le modèle d'apprentissage, pour utiliser le modèle sur un répertoire d'images, veuillez utiliser la commande suivante:
 
-```$ python3 detect.py --weights weights/best.pt --img 416 --conf 0.4 --source chemine/vers/image ```
+```bash
+$ python3 detect.py --weights weights/best.pt --img 416 --conf 0.4 --source chemine/vers/image
+```
 
 ## Vérification des résulats 
 
