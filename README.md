@@ -44,9 +44,11 @@ Pour lancer le modèle, veuillez utiliser la commande :
 ```$ python main.py chemin/vers/image```
 
 Pour lancer le modèle d'apprentissage, veuillez exécuter toutes les cellules de code dans le fichier *yolo.ipynb* en utilisant la commande:
+
 ```$ run -i yolo.ipynb```
 
 Après avoir génèrer le modèle d'apprentissage, pour utiliser le modèle sur un répertoire d'images, veuillez utiliser la commande suivante:
+
 ```$ python3 detect.py --weights weights/best.pt --img 416 --conf 0.4 --source chemine/vers/image ```
 
 ## Vérification des résulats 
