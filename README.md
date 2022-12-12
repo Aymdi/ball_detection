@@ -10,3 +10,9 @@ Le pipeline de l'algorithme de vision est constitué comme suit :
     - Enfin, l'algorithme de Hough est utilisé pour détecter les cercles dans ces contours.
 
 Pour lancer le modèle il faut faire : python main.py chemin/vers/image
+
+# Vérification des résulats 
+
+Afin de vérifier les résultats obtenus par l'algorithme de vision, il nous faut saisir manuellement le centre du ballon puis le rayon du ballon sur chaque image. Nous stockons ces valeurs dans deux listes puis nous comparons les points qui appartiennent au disque saisi manuellement et les points qui appartiennent au disque trouvé par l'algorithme.
+
+Pour lancer la vérification, il faut éxécuter le programme. Ainsi il graphique représentant le pourcentage de correspondance des cercles en fonction des images apparaitra. Ainsi, que la moyenne de ces pourcentages. Le programme ne s'effectue que sur la première bases d'images (log1).
