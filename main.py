@@ -39,35 +39,31 @@ class SecondModel(model):
         seq = cv2.equalizeHist(s)
         
         h_blur = cv2.GaussianBlur(h, (11,11), 2)
-        th, h_tresh = cv2.threshold(h_blur, 40, 1, cv2.THRESH_BINARY)
-
+        th, h_tresh = cv2.threshold(h_blur, 30, 1, cv2.THRESH_BINARY)
 
         contours, hierarchy = cv2.findContours(h_tresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)[-2:]
-        print(contours)
+        L=[]
         for cnt in contours:
-            x,y,w,h = cv2.boundingRect(cnt)
-            im = cv2.rectangle(img, (x,y), (x+w,y+h), (255,0,0), 2)
-        cv2.imshow('img',im)
-        cv2.waitKey(0)    
+            x,y,width,height = cv2.boundingRect(cnt)
+            L.append((x,y,width,height))
+        lbound = sorted(L, key=lambda x: x[-2], reverse=True)[0]
 
+        hsv_new = cv2.merge([h,seq,v])
+        
+        cropped_image = hsv_new[lbound[1] : lbound[1] + lbound[3], :]
+
+        gray = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+        h_blur = cv2.GaussianBlur(gray, (7,7), 3)
 
         kernel = np.ones((3,3))
-        h_dil = cv2.dilate(h_tresh, kernel, iterations=2)
-        h_er = 1 - cv2.erode(h_tresh, kernel, iterations=2)
-        h_total = h_dil * h_er
-        hsv_new = cv2.merge([h,seq,v])
-        gray = cv2.cvtColor(hsv_new, cv2.COLOR_BGR2GRAY)
-        h_blur = cv2.GaussianBlur(gray, (7,7), 4)
-        edges = cv2.Canny(h_blur,130,100)
-        cv2.imshow(path+"a", h_tresh*255)
-        cv2.imshow(path+"b", h_total*255)
-        dil = cv2.dilate(h_total * edges, kernel)
-        circles = cv2.HoughCircles(dil, cv2.HOUGH_GRADIENT, 3, 10000, param1=1000,param2=90)
-        cv2.imshow(path, dil)
+
+        edges = cv2.Canny(h_blur,130,200)
+        dil = cv2.dilate(edges, kernel)
+        circles = cv2.HoughCircles(dil, cv2.HOUGH_GRADIENT, 3, 10000, param1=1000,param2=70)
         if(circles is None):
             return [[None, None], 0]
         x, y, r = circles[0].reshape(3)
-        return [[x, y], r]
+        return [[x, lbound[1] + y], r]
 
 model1 = SecondModel()
 
@@ -77,8 +73,8 @@ l1n2 = os.listdir(path + "/log1nv2")
 l1n3 = os.listdir(path + "/log1nv3")
 l1n4 = os.listdir(path + "/log1nv4")
 
-for file in l1n4 :
-    img = cv2.imread(path + "/log1nv4/" + file)
+for file in l1n1 :
+    img = cv2.imread(path + "/log1nv1/" + file)
     circles = model1.findBall(img)
     output = img.copy()
     if circles[0][0] is not None:
