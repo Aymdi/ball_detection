@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import os
+import sys
 
 def display(img):
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -60,41 +60,32 @@ class SecondModel(model):
         edges = cv2.Canny(h_blur,130,200)
         dil = cv2.dilate(edges, kernel)
         circles = cv2.HoughCircles(dil, cv2.HOUGH_GRADIENT, 3, 10000, param1=1000,param2=90)
+
         if(circles is None):
             return [[None, None], 0]
         x, y, r = circles[0].reshape(3)
         return [[x, lbound[1] + y], r]
 
-model1 = SecondModel()
+if __name__ == "__main__":
+    model2 = SecondModel()
+    img_path = sys.argv[1]
+    img = cv2.imread(img_path)
+    res = model2.findBall(img)
 
-path = "../data"
-l1 = os.listdir(path + "/log1")
+    x = res[0][0]
+    y = res[0][1]
+    r = res[1]
 
-L=[]
-for file in l1 :
-    img = cv2.imread(path + "/log1/" + file)
-    circles = model1.findBall(img)
-    L.append(circles)
+    if(x is not None):
+        cv2.circle(img, (int(x), int(y)), int(r), (0, 255, 0), 4)
+        cv2.rectangle(img, (int(x) - 5, int(y) - 5), (int(x) + 5, int(y) + 5), (0, 128, 255), -1)
+
+        # show the output image
+        cv2.imshow("output", img)
+        cv2.waitKey(0)
+        print("Center : x :", res[0][0], "- y :", res[0][1], " - radius :", res[1])
+    else:
+        print("The model failed to find the ball.")
 
 
-with open(r'centers.txt', 'w') as fp:
-    fp.write("[")
-    for v in L:
-        # write each item on a new line
-        fp.write("[")
-        fp.write(str(v[0][0]))
-        fp.write(", ")
-        fp.write(str(v[0][1]))
-        fp.write("],")
-    fp.write("]")
-    print('Done')
-
-with open(r'radius.txt', 'w') as fp:
-    fp.write("[")
-    for v in L:
-        # write each item on a new line
-        fp.write(str(v[1]))
-        fp.write(", ")
-    fp.write("]")
-    print('Done')
 
