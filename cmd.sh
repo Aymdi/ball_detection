@@ -1,0 +1,1 @@
+python3 detect.py --weights weights/best.pt --img 416 --conf 0.4 --source 108.png
