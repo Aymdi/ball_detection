@@ -59,7 +59,7 @@ class SecondModel(model):
 
         edges = cv2.Canny(h_blur,130,200)
         dil = cv2.dilate(edges, kernel)
-        circles = cv2.HoughCircles(dil, cv2.HOUGH_GRADIENT, 3, 10000, param1=1000,param2=70)
+        circles = cv2.HoughCircles(dil, cv2.HOUGH_GRADIENT, 3, 10000, param1=1000,param2=90)
         if(circles is None):
             return [[None, None], 0]
         x, y, r = circles[0].reshape(3)
@@ -67,29 +67,34 @@ class SecondModel(model):
 
 model1 = SecondModel()
 
-path = "./ball_detection/images"
-l1n1 = os.listdir(path + "/log1nv1")
-l1n2 = os.listdir(path + "/log1nv2")
-l1n3 = os.listdir(path + "/log1nv3")
-l1n4 = os.listdir(path + "/log1nv4")
+path = "../data"
+l1 = os.listdir(path + "/log1")
 
-for file in l1n1 :
-    img = cv2.imread(path + "/log1nv1/" + file)
+L=[]
+for file in l1 :
+    img = cv2.imread(path + "/log1/" + file)
     circles = model1.findBall(img)
-    output = img.copy()
-    if circles[0][0] is not None:
-        # convert the (x, y) coordinates and radius of the circles to integers
-        # loop over the (x, y) coordinates and radius of the circles
-        x = int(circles[0][0])
-        y = int(circles[0][1])
-        r = int(circles[1])
-        # draw the circle in the output image, then draw a rectangle
-        # corresponding to the center of the circle
-        cv2.circle(output, (x, y), r, (0, 255, 0), 4)
-        cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
-        
-    cv2.imshow(file, output)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    L.append(circles)
 
+
+with open(r'centers.txt', 'w') as fp:
+    fp.write("[")
+    for v in L:
+        # write each item on a new line
+        fp.write("[")
+        fp.write(str(v[0][0]))
+        fp.write(", ")
+        fp.write(str(v[0][1]))
+        fp.write("],")
+    fp.write("]")
+    print('Done')
+
+with open(r'radius.txt', 'w') as fp:
+    fp.write("[")
+    for v in L:
+        # write each item on a new line
+        fp.write(str(v[1]))
+        fp.write(", ")
+    fp.write("]")
+    print('Done')
 
