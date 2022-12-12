@@ -47,7 +47,7 @@ Pour lancer le modèle, veuillez utiliser la commande :
 $ python main.py chemin/vers/image
 ```
 
-Pour lancer le modèle d'apprentissage, veuillez exécuter toutes les cellules de code dans le fichier *yolo.ipynb* en utilisant la commande:
+Pour lancer le modèle d'apprentissage, veuillez exécuter toutes les cellules de code dans le fichier ```yolo.ipynb``` en utilisant la commande:
 
 ```bash
 $ run -i yolo.ipynb
